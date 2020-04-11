@@ -17,7 +17,7 @@ void error(const char *msg){
 int main(int argc, char *argv[]){
 
 	if(argc < 2){
-	fprintf(stderr, "Port number missing. Usage: chatServer.c PORT#\n");
+	fprintf(stderr, "Port number missing. Usage: chatServer.c PORT#.\n");
 	exit(1);
 
 }
@@ -29,7 +29,7 @@ int main(int argc, char *argv[]){
 
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if(sockfd < 0){
-	error("Error opening socket");
+	error("Error opening socket.\n");
 }
 	// clear data in the parameter provided
 	bzero((char *) &serv_addr, sizeof(serv_addr));
@@ -40,7 +40,7 @@ int main(int argc, char *argv[]){
 	serv_addr.sin_port = htons(portno);
 
 	if(bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0){
-	error("Binding Failed");
+	error("Binding Failed.\n");
 }
 	listen(sockfd, 5);
 	clilen = sizeof(cli_addr);
@@ -48,14 +48,14 @@ int main(int argc, char *argv[]){
 	newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
 
 	if(newsockfd < 0){
-	error("Accept Failed\n");
+	error("Accept Failed.\n");
 }
 	while(1){
 
 	bzero(buffer, 255);
 	n = read(newsockfd, buffer, 255);
 	if(n < 0){
-	error("Reading Failed\n");
+	error("Reading Failed.\n");
 }
 	printf("Client : %s\n", buffer);
 	bzero(buffer, 255);
@@ -63,7 +63,7 @@ int main(int argc, char *argv[]){
 
 	n = write(newsockfd, buffer, strlen(buffer));
 	if(n < 0){
-	error("Writing Failed\n");
+	error("Writing Failed.\n");
 }
 	int i = strncmp("Bye", buffer, 3);
 	if(i == 0){
@@ -72,6 +72,7 @@ int main(int argc, char *argv[]){
 } // end while
 	close(newsockfd);
 	close(sockfd);
+	printf("Disconnected.\n")
 	return 0;
 } // end main
 
